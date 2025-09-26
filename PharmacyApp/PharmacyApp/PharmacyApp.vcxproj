@@ -126,10 +126,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="medicine.cpp" />
     <ClCompile Include="MedicineDatabase.cpp" />
+    <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="medicine.h" />
     <ClInclude Include="MedicineDatabase.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
