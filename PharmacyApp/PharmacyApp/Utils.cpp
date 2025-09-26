@@ -21,3 +21,26 @@ std::string Utils::to_upper(const std::string &str) {
 	}
 	return upper_str;
  }
+
+
+std::string Utils::left_trim(const std::string& str) {
+
+	int pos = 0;
+
+	while (pos < str.size() && str[pos] == ' ')
+		pos++;
+
+	return str.substr(pos);
+}
+std::string Utils::right_trim(const std::string& str) {
+
+	int pos = str.size() - 1;
+
+	while (pos > 0 && str[pos] == ' ')
+		pos--;
+
+	return str.substr(0, pos+1);
+}
+std::string Utils::full_trim(const std::string& str) {
+	return left_trim(right_trim(str));
+}

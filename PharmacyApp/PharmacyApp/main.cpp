@@ -7,17 +7,15 @@
 using namespace std;
 
 
-
-
-
 int main() {
 
-	Medicine find = MedicineDatabase::find_by_name("panadol extra");
+	Medicine new_medicne("A21", "Panadol Extra", "216578");
 
+	if (new_medicne.add_new())
+		cout << "Saved!" << endl;
+	else
+		cout << "Not Saved!" << endl;
 
-	std::cout << find.get_name() << std::endl <<
-		find.get_barcode() << std::endl <<
-		find.get_id() << std::endl;
 
 
 	return 0;

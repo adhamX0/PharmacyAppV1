@@ -1,14 +1,35 @@
 #include "MedicineDatabase.h"
 #include <string>
+#include <direct.h>
 
 bool MedicineDatabase::add_new(Medicine *new_medicine) {
 	std::string enter_line;
 
+	if (new_medicine->get_name() == Medicine::_DEF_NAME_ ||
+		new_medicine->get_id() == Medicine::_DEF_ID_ || new_medicine->get_barcode() == Medicine::_DEF_BARCODE_
+		|| new_medicine->get_name() == "" ||
+		new_medicine->get_id() == "" || new_medicine->get_barcode() == "")
+		return false;
+	// Check
+	std::vector<Medicine> all_list = MedicineDatabase::get_all();
+
+	for (auto& X : all_list) {
+		if (Utils::to_upper(X.get_id()) == Utils::to_upper(new_medicine->get_id()) ||
+			Utils::to_upper(X.get_name()) == Utils::to_upper(new_medicine->get_name()) ||
+			Utils::to_upper(X.get_barcode()) == Utils::to_upper(new_medicine->get_barcode()))
+			return false;
+	}
+
+
 	enter_line = new_medicine->get_id() + "#//#" +
 		new_medicine->get_name() + "#//#" + 
 		new_medicine->get_barcode();
+	
 
-	std::ofstream file("database\\medicine\\MedicineDatabaseFile.txt", std::ios::app);
+	_mkdir("database");
+	_mkdir("database\\medicine");
+
+	std::ofstream file("database\\medicine\\MedicineDatabaseFile.txt", std::ios::out);
 
 	if (file.is_open()) {
 		file << enter_line << '\n';
