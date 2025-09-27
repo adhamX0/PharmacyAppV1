@@ -4,6 +4,8 @@
 #include <string>
 #include "Utils.h"
 
+
+
 class Medicine {
 public:
 	static std::string _DEF_ID_;
@@ -19,7 +21,7 @@ private:
 	std::string _barcode;
 
 public:
-	Medicine() : _id(_DEF_NAME_), _name(_DEF_NAME_), _barcode(_DEF_BARCODE_) {
+	Medicine() : _id(_DEF_ID_), _name(_DEF_NAME_), _barcode(_DEF_BARCODE_) {
 	};
 
 	Medicine(std::string medicine_id, std::string medicine_name, std::string medicine_barcode) 
@@ -36,6 +38,8 @@ public:
 	void set_id(std::string id) { this->_id = id; }
 	void set_name(std::string name) { this->_name = name; }
 	void set_barcode(std::string barcode) { this->_barcode = barcode; }
+
+	bool is_ready();
 
 	bool add_new();
 };

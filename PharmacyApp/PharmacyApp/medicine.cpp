@@ -26,3 +26,13 @@ bool Medicine::add_new() {
 
 	return MedicineDatabase::add_new(this);
 }
+
+
+
+bool Medicine::is_ready() {
+	if (this->_name == Medicine::_DEF_NAME_ ||
+		this->_id == Medicine::_DEF_ID_ || this->_barcode == Medicine::_DEF_BARCODE_
+		|| this->_name == "" ||
+		this->_id == "" || this->_barcode == "")
+		return false;
+}

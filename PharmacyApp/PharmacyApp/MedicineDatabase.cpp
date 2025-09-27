@@ -2,6 +2,23 @@
 #include <string>
 #include <direct.h>
 
+bool writing_file(std::vector<Medicine> medicine_list) {
+	std::ofstream file("database\\medicine\\MedicineDatabaseFile.txt");
+
+	if (!file)
+		return false;
+
+	std::string in_line;
+	for (auto& X : medicine_list) {
+		in_line = X.get_id() + "#//#" + X.get_name() + "#//#" + X.get_barcode() + '\n';
+		file << in_line;
+	}
+
+	file.close();
+	return true;
+
+}
+
 bool MedicineDatabase::add_new(Medicine *new_medicine) {
 	std::string enter_line;
 
@@ -70,42 +87,119 @@ std::vector<Medicine> MedicineDatabase::get_all() {
 
 
 bool MedicineDatabase::remove_by_id(std::string medicine_id) {
+
+	std::vector<Medicine> medicine_list = MedicineDatabase::get_all();
+
+	int index = 0;
+	for (auto& X : medicine_list) {
+		if (Utils::to_upper(X.get_id()) == Utils::to_upper( medicine_id)) {
+			medicine_list.erase(medicine_list.begin() + index);
+			writing_file(medicine_list);
+			return true;
+		}
+		index++;
+	}
 	return false;
 }
 bool MedicineDatabase::remove_by_name(std::string medicine_name) {
 
-		return false;
+	std::vector<Medicine> medicine_list = MedicineDatabase::get_all();
+
+	int index = 0;
+	for (auto& X : medicine_list) {
+		if (Utils::to_upper(X.get_name()) == Utils::to_upper(medicine_name)) {
+			medicine_list.erase(medicine_list.begin() + index);
+			writing_file(medicine_list);
+			return true;
+		}
+		index++;
+	}
+	return false;
 }
 bool MedicineDatabase::remove_by_barcode(std::string medicine_barcode) {
 
-		return false;
+	std::vector<Medicine> medicine_list = MedicineDatabase::get_all();
+
+	int index = 0;
+
+	for (auto& X : medicine_list) {
+		if (Utils::to_upper(X.get_barcode()) == Utils::to_upper(medicine_barcode)) {
+			medicine_list.erase(medicine_list.begin() + index);
+			writing_file(medicine_list);
+			return true;
+		}
+		index++;
+	}
+	return false;
 }
 
 Medicine MedicineDatabase::find_by_id(std::string medicine_id) {
-	std::vector<Medicine> all = get_all();
+	std::ifstream file("database\\medicine\\MedicineDatabaseFile.txt");
+	std::string line_string;
 
-	for (auto& i : all) {
-		if (Utils::to_upper(i.get_id()) == Utils::to_upper(medicine_id)) return i;
+	if (file.is_open()) {
+		while (std::getline(file, line_string)) {
+
+			std::vector<std::string> line;
+			line = Utils::substrings(line_string, "#//#");
+			if (Utils::to_upper(line[0]) == Utils::to_upper(medicine_id)) {
+				file.close();
+				return Medicine(line[0], line[1], line[2]);
+			}
+
+		}
+		file.close();
 	}
-
 	return Medicine();
 }
 Medicine MedicineDatabase::find_by_name(std::string medicine_name){
-	std::vector<Medicine> all = get_all();
+	std::ifstream file("database\\medicine\\MedicineDatabaseFile.txt");
+	std::string line_string;
 
-	for (auto& i : all) {
-		if (Utils::to_upper(i.get_name()) == Utils::to_upper(medicine_name)) return i;
+	if (file.is_open()) {
+		while (std::getline(file, line_string)) {
+
+			std::vector<std::string> line;
+			line = Utils::substrings(line_string, "#//#");
+			if (Utils::to_upper(line[1]) == Utils::to_upper(medicine_name)) {
+				file.close();
+				return Medicine(line[0], line[1], line[2]);
+			}
+
+		}
+		file.close();
 	}
-
 	return Medicine();
 }
-Medicine MedicineDatabase::find_by_barcode(std::string medicine_barcode){
-	std::vector<Medicine> all = get_all();
 
-	for (auto& i : all) {
-		if (Utils::to_upper(i.get_barcode()) == Utils::to_upper(medicine_barcode)) return i;
+//Medicine MedicineDatabase::find_by_barcode(std::string medicine_barcode){
+//	std::vector<Medicine> all = get_all();
+//
+//	for (auto& i : all) {
+//		if (Utils::to_upper(i.get_barcode()) == Utils::to_upper(medicine_barcode)) return i;
+//	}
+//
+//	return Medicine();
+//}
+
+
+Medicine MedicineDatabase::find_by_barcode(std::string medicine_barcode) {
+	std::ifstream file("database\\medicine\\MedicineDatabaseFile.txt");
+	std::string line_string;
+
+	if (file.is_open()) {
+		while (std::getline(file, line_string)) {
+
+			std::vector<std::string> line;
+			line = Utils::substrings(line_string, "#//#");
+			if (Utils::to_upper(line[2]) == Utils::to_upper(medicine_barcode)) {
+				file.close();
+				return Medicine(line[0], line[1], line[2]);
+			}
+
+		}
+		file.close();
 	}
-
 	return Medicine();
 }
 
